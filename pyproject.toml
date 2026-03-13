@@ -1,0 +1,12 @@
+[project]
+name = "pylasahandwritingdataset"
+version = "0.1.0"
+description = "LASA Handwriting dataset for Python3"
+readme = "README.md"
+authors = [{ name = "Ashrith Sagar", email = "ashrithy@iisc.ac.in" }]
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.10.10,<0.11.0"]
+build-backend = "uv_build"
