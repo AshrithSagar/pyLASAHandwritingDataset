@@ -418,6 +418,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
+    { name = "platformdirs" },
     { name = "scipy" },
 ]
 
@@ -443,6 +444,7 @@ typecheck = [
 [package.metadata]
 requires-dist = [
     { name = "numpy", specifier = ">=2.4.3" },
+    { name = "platformdirs", specifier = ">=4.9.4" },
     { name = "scipy", specifier = ">=1.17.1" },
 ]
 
