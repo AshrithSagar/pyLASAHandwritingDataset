@@ -5,6 +5,7 @@ LASA Handwriting Dataset
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal, cast
 
 import numpy as np
 from scipy.io import loadmat
@@ -12,21 +13,23 @@ from scipy.io import loadmat
 from pyLASAHandwritingDataset.downloader import get_dataset_dir
 from pyLASAHandwritingDataset.shapes import ALL_SHAPES, ShapeName
 
+__all__ = ["DataSet", "Demo", "Pattern", "ShapeName"]
+
 
 @dataclass(frozen=True)
 class Demo:
-    pos: np.ndarray  # (2, N) float64
-    vel: np.ndarray  # (2, N)
-    acc: np.ndarray  # (2, N)
-    t: np.ndarray  # (1, N) or (N,)
-    dt: float  # time step used for numerical diff (approx)
+    pos: np.ndarray[tuple[Literal[2], Literal[1000]], np.dtype[np.float64]]
+    vel: np.ndarray[tuple[Literal[2], Literal[1000]], np.dtype[np.float64]]
+    acc: np.ndarray[tuple[Literal[2], Literal[1000]], np.dtype[np.float64]]
+    t: np.ndarray[tuple[Literal[1000]], np.dtype[np.float64]]
+    dt: float  # Time step used for numerical diff (approx)
 
 
 @dataclass(frozen=True)
 class Pattern:
     name: ShapeName
     dt: float
-    demos: tuple[Demo, ...]  # 7
+    demos: tuple[Demo, Demo, Demo, Demo, Demo, Demo, Demo]  # 7
 
     def __post_init__(self):
         if self.name not in ALL_SHAPES:
@@ -55,19 +58,23 @@ class LASAHandwritingDataset:
                 continue
 
             mat = loadmat(str(mat_path))
-            dt = float(mat["dt"].item())
+            dt: float = mat["dt"].item()
 
-            demos: list[Demo] = []
+            _demos: list[Demo] = []
             for demo_struct in mat["demos"][0]:
                 d = demo_struct[0][0]
-                pos = np.asarray(d["pos"], dtype=np.float64)  # (2,N)
+                pos = np.asarray(d["pos"], dtype=np.float64)
                 vel = np.asarray(d["vel"], dtype=np.float64)
                 acc = np.asarray(d["acc"], dtype=np.float64)
-                t = np.asarray(d["t"], dtype=np.float64).ravel()
+                t = cast(
+                    np.ndarray[tuple[Literal[1000]], np.dtype[np.float64]],
+                    np.asarray(d["t"], dtype=np.float64).ravel(),
+                )
 
-                demos.append(Demo(pos=pos, vel=vel, acc=acc, t=t, dt=dt))
+                _demos.append(Demo(pos=pos, vel=vel, acc=acc, t=t, dt=dt))
 
-            data[name] = Pattern(name=name, dt=dt, demos=tuple(demos))
+            demos = tuple[Demo, Demo, Demo, Demo, Demo, Demo, Demo](_demos)
+            data[name] = Pattern(name=name, dt=dt, demos=demos)
 
         cls._data = data
 
@@ -80,15 +87,12 @@ class LASAHandwritingDataset:
     def __getattr__(self, name: ShapeName) -> Pattern:
         if name not in ALL_SHAPES:
             raise AttributeError(
-                f"{type(self).__name__!r} has no attribute {name!r}. "
-                f"Available shapes: {', '.join(ALL_SHAPES)}"
+                f"{type(self).__name__!r} has no attribute {name!r}.\n"
+                f"Available shapes: {', '.join(ALL_SHAPES)}."
             )
         self._load()
         assert self._data is not None
         return self._data[name]
-
-    def __dir__(self) -> list[str]:
-        return sorted(set(ALL_SHAPES) | {"shapes"})
 
 
 DataSet = LASAHandwritingDataset()
