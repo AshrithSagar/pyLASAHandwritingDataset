@@ -8,16 +8,28 @@ from pyLASAHandwritingDataset.dataset import (
     DataSet,
     LASADemonstration,
     LASAPattern,
-    ShapeName,
 )
-from pyLASAHandwritingDataset.shapes import ALL_SHAPES
+from pyLASAHandwritingDataset.motions import (
+    ALL_HANDWRITING_MOTIONS,
+    ALL_MULTI_MODEL_MOTIONS,
+    ALL_SINGLE_PATTERN_MOTIONS,
+    HandwritingMotion,
+    MultiModelMotion,
+    SinglePatternMotion,
+)
 
 __version__ = "0.1.0"
 __all__ = [
     "__version__",
+    #
     "DataSet",
     "LASADemonstration",
     "LASAPattern",
-    "ShapeName",
-    "ALL_SHAPES",
+    #
+    "ALL_HANDWRITING_MOTIONS",
+    "ALL_MULTI_MODEL_MOTIONS",
+    "ALL_SINGLE_PATTERN_MOTIONS",
+    "HandwritingMotion",
+    "MultiModelMotion",
+    "SinglePatternMotion",
 ]

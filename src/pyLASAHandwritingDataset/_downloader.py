@@ -1,7 +1,7 @@
 """
 Downloader utils
 """
-# src/pyLASAHandwritingDataset/downloader.py
+# src/pyLASAHandwritingDataset/_downloader.py
 
 import shutil
 from pathlib import Path

@@ -1,11 +1,11 @@
 """
 Handwriting motions (shapes) in the LASA Handwriting Dataset
 """
-# src/pyLASAHandwritingDataset/shapes.py
+# src/pyLASAHandwritingDataset/motions.py
 
 from typing import Literal
 
-ShapeName = Literal[
+SinglePatternMotion = Literal[
     "Angle",
     "BendedLine",
     "CShape",
@@ -19,10 +19,6 @@ ShapeName = Literal[
     "Leaf_2",
     "Line",
     "LShape",
-    "Multi_Models_1",
-    "Multi_Models_2",
-    "Multi_Models_3",
-    "Multi_Models_4",
     "NShape",
     "PShape",
     "RShape",
@@ -38,7 +34,17 @@ ShapeName = Literal[
     "Zshape",
 ]
 
-ALL_SHAPES: tuple[ShapeName, ...] = (
+MultiModelMotion = Literal[
+    "Multi_Models_1",
+    "Multi_Models_2",
+    "Multi_Models_3",
+    "Multi_Models_4",
+]
+
+HandwritingMotion = SinglePatternMotion | MultiModelMotion
+
+
+ALL_SINGLE_PATTERN_MOTIONS = (
     "Angle",
     "BendedLine",
     "CShape",
@@ -52,10 +58,6 @@ ALL_SHAPES: tuple[ShapeName, ...] = (
     "Leaf_2",
     "Line",
     "LShape",
-    "Multi_Models_1",
-    "Multi_Models_2",
-    "Multi_Models_3",
-    "Multi_Models_4",
     "NShape",
     "PShape",
     "RShape",
@@ -70,3 +72,12 @@ ALL_SHAPES: tuple[ShapeName, ...] = (
     "WShape",
     "Zshape",
 )
+
+ALL_MULTI_MODEL_MOTIONS = (
+    "Multi_Models_1",
+    "Multi_Models_2",
+    "Multi_Models_3",
+    "Multi_Models_4",
+)
+
+ALL_HANDWRITING_MOTIONS = ALL_SINGLE_PATTERN_MOTIONS + ALL_MULTI_MODEL_MOTIONS

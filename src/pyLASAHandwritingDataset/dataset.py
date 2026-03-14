@@ -5,20 +5,24 @@ Dataset core
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal, TypeGuard
 
 import numpy as np
 from scipy.io import loadmat
 
-from pyLASAHandwritingDataset.downloader import get_dataset_dir
-from pyLASAHandwritingDataset.shapes import ALL_SHAPES, ShapeName
+from pyLASAHandwritingDataset._downloader import get_dataset_dir
+from pyLASAHandwritingDataset.motions import ALL_HANDWRITING_MOTIONS, HandwritingMotion
 
-__all__ = ["DataSet", "LASADemonstration", "LASAPattern", "ShapeName"]
+__all__ = ["DataSet", "LASADemonstration", "LASAPattern"]
+
+
+def is_handwriting_motion(name: str) -> TypeGuard[HandwritingMotion]:
+    return name in ALL_HANDWRITING_MOTIONS
 
 
 @dataclass(frozen=True)
 class LASADemonstration:
-    """A container for a single demonstration in the LASA Handwriting Dataset."""
+    """A container for a single demonstration of some handwriting motion in the LASA Handwriting Dataset."""
 
     pos: np.ndarray[tuple[Literal[2], Literal[1000]], np.dtype[np.float64]]
     """
@@ -44,7 +48,9 @@ class LASADemonstration:
 
 @dataclass(frozen=True)
 class LASAPattern:
-    name: ShapeName
+    """A container for a handwriting motion pattern in the LASA Handwriting Dataset."""
+
+    name: HandwritingMotion
 
     dt: float
     """
@@ -60,9 +66,12 @@ class LASAPattern:
         LASADemonstration,
         LASADemonstration,
     ]  # 7
+    """
+    A structure variable containing necessary information about all demonstrations.
+    """
 
     def __post_init__(self):
-        if self.name not in ALL_SHAPES:
+        if self.name not in ALL_HANDWRITING_MOTIONS:
             raise ValueError(f"Unknown shape {self.name!r}")
 
     def __repr__(self):
@@ -70,7 +79,7 @@ class LASAPattern:
 
 
 class LASAHandwritingDataset:
-    _data: dict[ShapeName, LASAPattern] | None = None
+    _data: dict[HandwritingMotion, LASAPattern] | None = None
     _root: Path | None = None
 
     @classmethod
@@ -81,13 +90,13 @@ class LASAHandwritingDataset:
         root = get_dataset_dir()
         cls._root = root
 
-        data: dict[ShapeName, LASAPattern] = {}
+        data: dict[HandwritingMotion, LASAPattern] = {}
         for mat_path in root.glob("*.mat"):
             name = mat_path.stem
-            if name not in ALL_SHAPES:
+            if not is_handwriting_motion(name):
                 continue
 
-            mat = loadmat(str(mat_path))
+            mat: dict[str, Any] = loadmat(str(mat_path))
             dt: float = mat["dt"].item()
 
             _demos: list[LASADemonstration] = []
@@ -100,36 +109,30 @@ class LASAHandwritingDataset:
 
                 _demos.append(LASADemonstration(pos=pos, t=t, vel=vel, acc=acc))
 
-            demos = tuple[
-                LASADemonstration,
-                LASADemonstration,
-                LASADemonstration,
-                LASADemonstration,
-                LASADemonstration,
-                LASADemonstration,
-                LASADemonstration,
-            ](_demos)
+            demos = tuple(_demos)
+            assert len(demos) == 7
             data[name] = LASAPattern(name=name, dt=dt, demos=demos)
 
         cls._data = data
 
     @classmethod
-    def shapes(cls) -> tuple[ShapeName, ...]:
+    def handwriting_motions(cls) -> tuple[HandwritingMotion, ...]:
         cls._load()
         assert cls._data is not None
         return tuple(sorted(cls._data))
 
-    def __getitem__(self, name: ShapeName) -> LASAPattern:
-        if name not in ALL_SHAPES:
+    def __getitem__(self, name: HandwritingMotion) -> LASAPattern:
+        if name not in ALL_HANDWRITING_MOTIONS:
             raise AttributeError(
                 f"{type(self).__name__!r} has no attribute {name!r}.\n"
-                f"Available shapes: {', '.join(ALL_SHAPES)}."
+                f"Available shapes: {', '.join(ALL_HANDWRITING_MOTIONS)}."
             )
         self._load()
         assert self._data is not None
         return self._data[name]
 
-    def __getattr__(self, name: ShapeName) -> LASAPattern:
+    # This is only provided in case one prefers attribute access, although risky.
+    def __getattr__(self, name: HandwritingMotion) -> LASAPattern:  # type: ignore[misc]
         return self.__getitem__(name)
 
 
