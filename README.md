@@ -12,10 +12,10 @@ Install the package from PyPI:
 
 ```shell
 # Using uv
-uv add pyLASAHandwritingDataset
+uv add pylasahandwritingdataset
 
 # Or with pip
-pip3 install pyLASAHandwritingDataset
+pip3 install pylasahandwritingdataset
 ```
 
 To install from the latest commit:
