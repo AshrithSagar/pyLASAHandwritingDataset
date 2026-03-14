@@ -4,12 +4,12 @@ version = "0.1.0"
 description = "LASA Handwriting dataset for Python3"
 readme = "README.md"
 authors = [{ name = "Ashrith Sagar", email = "ashrithy@iisc.ac.in" }]
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
-    "numpy>=2.4.3",
+    "numpy>=2.2.6",
     "platformdirs>=4.9.4",
     "pooch>=1.9.0",
-    "scipy>=1.17.1",
+    "scipy>=1.15.3",
     "tqdm>=4.67.3",
 ]
 
@@ -18,7 +18,7 @@ requires = ["uv_build>=0.10.10,<0.11.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["scipy-stubs>=1.17.1.1"]
+dev = ["scipy-stubs>=1.15.3.0"]
 lint = ["ruff>=0.15.6"]
 test = ["pytest>=9.0.2", "pytest-memray>=1.8.0"]
 typecheck = [
