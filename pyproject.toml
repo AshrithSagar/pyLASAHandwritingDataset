@@ -1,5 +1,5 @@
 [project]
-name = "pylasahandwritingdataset"
+name = "pyLASAHandwritingDataset"
 version = "0.1.0"
 description = "LASA Handwriting dataset for Python3"
 readme = "README.md"
@@ -10,6 +10,7 @@ dependencies = [
     "platformdirs>=4.9.4",
     "pooch>=1.9.0",
     "scipy>=1.17.1",
+    "tqdm>=4.67.3",
 ]
 
 [build-system]
