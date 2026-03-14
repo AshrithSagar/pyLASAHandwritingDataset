@@ -84,7 +84,7 @@ class LASAHandwritingDataset:
         assert cls._data is not None
         return tuple(sorted(cls._data))
 
-    def __getattr__(self, name: ShapeName) -> Pattern:
+    def __getitem__(self, name: ShapeName) -> Pattern:
         if name not in ALL_SHAPES:
             raise AttributeError(
                 f"{type(self).__name__!r} has no attribute {name!r}.\n"
@@ -93,6 +93,9 @@ class LASAHandwritingDataset:
         self._load()
         assert self._data is not None
         return self._data[name]
+
+    def __getattr__(self, name: ShapeName) -> Pattern:
+        return self.__getitem__(name)
 
 
 DataSet = LASAHandwritingDataset()
