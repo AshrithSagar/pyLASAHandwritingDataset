@@ -70,11 +70,11 @@ class LASAPattern:
     A structure variable containing necessary information about all demonstrations.
     """
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.name not in ALL_HANDWRITING_MOTIONS:
             raise ValueError(f"Unknown shape {self.name!r}")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"LASAPattern({self.name!r}, {len(self.demos)} demos, dt={self.dt:.4g})"
 
 
