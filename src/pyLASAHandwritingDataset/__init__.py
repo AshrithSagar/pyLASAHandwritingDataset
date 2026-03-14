@@ -1,6 +1,12 @@
 """
 LASA Handwriting Dataset, version 2.0\n
 See https://bitbucket.org/khansari/lasahandwritingdataset/src/master/Readme.txt
+
+This module provides classes to load and interact with the LASA Handwriting Dataset in Python3.
+
+References:
+S. M. Khansari-Zadeh and A. Billard, "Learning Stable Non-Linear Dynamical
+    Systems with Gaussian Mixture Models", IEEE Transaction on Robotics, 2011.
 """
 # src/pyLASAHandwritingDataset/__init__.py
 
