@@ -1,5 +1,5 @@
 """
-LASA Handwriting Dataset Shapes
+Handwriting motions (shapes) in the LASA Handwriting Dataset
 """
 # src/pyLASAHandwritingDataset/shapes.py
 

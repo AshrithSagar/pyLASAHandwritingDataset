@@ -2,7 +2,7 @@
 
 from pyLASAHandwritingDataset import DataSet
 
-data = DataSet.GShape  # Auto-downloads on first access
+data = DataSet["GShape"]  # Auto-downloads (all shapes) on first access
 print(data)
 print(data.demos[0].pos.shape)
 
