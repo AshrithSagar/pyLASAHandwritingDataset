@@ -3,13 +3,12 @@ Downloader utils
 """
 # src/pyLASAHandwritingDataset/downloader.py
 
-import hashlib
 import shutil
 from pathlib import Path
 from zipfile import ZipFile
 
 import platformdirs
-import requests
+import pooch  # type: ignore[import-untyped]
 
 PKG_NAME = "pyLASAHandwritingDataset"
 COMMIT_FULLHASH = "38304f7c0ac4708b0fd38331d94d02095ad0ccfd" or "master"
@@ -24,26 +23,6 @@ _ZIP_NAME = "lasahandwritingdataset.zip"
 EXPECTED_MAT_COUNT = 30
 
 
-def _download(url: str, dest: Path) -> None:
-    hasher = hashlib.sha256()
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(dest, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                if not chunk:
-                    continue
-                f.write(chunk)
-                hasher.update(chunk)
-
-    digest = hasher.hexdigest()
-    if digest != CHECKSUM.split(":", 1)[1]:
-        dest.unlink(missing_ok=True)
-        raise ValueError(
-            f"SHA256 hash of downloaded file ({_ZIP_NAME}) does not match the known hash: expected {CHECKSUM} but got {digest}. "
-            "Deleted download for safety. The downloaded file may have been corrupted or the known hash may be outdated."
-        )
-
-
 def get_dataset_dir() -> Path:
     """
     Returns path to the DataSet folder with all .mat files.
@@ -55,8 +34,13 @@ def get_dataset_dir() -> Path:
     _CACHE_ROOT.mkdir(parents=True, exist_ok=True)
     zip_path = _CACHE_ROOT / _ZIP_NAME
 
-    if not zip_path.exists():
-        _download(REPO_ZIP_URL, zip_path)
+    pooch.retrieve(  # pyright: ignore[reportUnknownMemberType]
+        url=REPO_ZIP_URL,
+        known_hash=CHECKSUM,
+        fname=zip_path.name,
+        path=_CACHE_ROOT,
+        progressbar=True,
+    )
 
     # Temporary extraction root
     temp_extract = _CACHE_ROOT / "temp_extract"
@@ -85,4 +69,5 @@ def get_dataset_dir() -> Path:
             f"Expected {EXPECTED_MAT_COUNT} .mat files in {DATASET_ROOT}, found {mat_count}"
         )
 
+    print(f"Successfully extracted {mat_count} .mat files to {DATASET_ROOT}")
     return DATASET_ROOT
