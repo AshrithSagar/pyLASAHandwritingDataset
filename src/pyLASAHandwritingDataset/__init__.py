@@ -13,7 +13,7 @@ S. M. Khansari-Zadeh and A. Billard, "Learning Stable Non-Linear Dynamical
 from pyLASAHandwritingDataset.dataset import (
     DataSet,
     LASADemonstration,
-    LASAPattern,
+    LASAMotionPattern,
 )
 from pyLASAHandwritingDataset.motions import (
     ALL_HANDWRITING_MOTIONS,
@@ -30,7 +30,7 @@ __all__ = [
     #
     "DataSet",
     "LASADemonstration",
-    "LASAPattern",
+    "LASAMotionPattern",
     #
     "ALL_HANDWRITING_MOTIONS",
     "ALL_MULTI_MODEL_MOTIONS",
