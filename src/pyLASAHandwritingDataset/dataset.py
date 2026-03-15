@@ -13,7 +13,7 @@ from scipy.io import loadmat
 from pyLASAHandwritingDataset._downloader import get_dataset_dir
 from pyLASAHandwritingDataset.motions import ALL_HANDWRITING_MOTIONS, HandwritingMotion
 
-__all__ = ["DataSet", "LASADemonstration", "LASAMotionPattern"]
+__all__ = ["DataSet", "LASADemonstration", "LASAMotionPattern", "is_handwriting_motion"]
 
 
 def is_handwriting_motion(name: str) -> TypeGuard[HandwritingMotion]:
