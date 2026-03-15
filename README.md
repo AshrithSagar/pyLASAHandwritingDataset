@@ -62,7 +62,14 @@ from pyLASAHandwritingDataset import (
 
 For documentation, refer to the original dataset repo's [README](https://bitbucket.org/khansari/lasahandwritingdataset/src/master/Readme.txt).
 
-## Reference
+## References
+
+- https://bitbucket.org/khansari/lasahandwritingdataset
+- https://www.epfl.ch/labs/lasa/code-datasets/
+- https://github.com/epfl-lasa/LASAHandwritingDataset
+- https://github.com/justagist/pyLasaDataset
+
+## Acknowledgement
 
 If you use this dataset in research, please cite the original author:
 
