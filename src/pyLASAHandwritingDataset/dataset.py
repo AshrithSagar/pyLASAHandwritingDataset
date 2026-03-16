@@ -5,19 +5,19 @@ Dataset core
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal, TypeGuard
+from typing import Any, Literal
 
 import numpy as np
 from scipy.io import loadmat
 
 from pyLASAHandwritingDataset._downloader import get_dataset_dir
-from pyLASAHandwritingDataset.motions import ALL_HANDWRITING_MOTIONS, HandwritingMotion
+from pyLASAHandwritingDataset.motions import (
+    ALL_HANDWRITING_MOTIONS,
+    HandwritingMotion,
+    is_handwriting_motion,
+)
 
-__all__ = ["DataSet", "LASADemonstration", "LASAMotionPattern", "is_handwriting_motion"]
-
-
-def is_handwriting_motion(name: str) -> TypeGuard[HandwritingMotion]:
-    return name in ALL_HANDWRITING_MOTIONS
+__all__ = ["DataSet", "LASADemonstration", "LASAMotionPattern"]
 
 
 @dataclass(frozen=True)

@@ -3,7 +3,7 @@ Handwriting motions (shapes) in the LASA Handwriting Dataset
 """
 # src/pyLASAHandwritingDataset/motions.py
 
-from typing import Final, Literal
+from typing import Final, Literal, TypeGuard
 
 SinglePatternMotion = Literal[
     "Angle",
@@ -81,3 +81,15 @@ ALL_MULTI_MODEL_MOTIONS: Final = (
 )
 
 ALL_HANDWRITING_MOTIONS: Final = ALL_SINGLE_PATTERN_MOTIONS + ALL_MULTI_MODEL_MOTIONS
+
+
+def is_single_pattern_motion(pattern_name: str) -> TypeGuard[SinglePatternMotion]:
+    return pattern_name in ALL_SINGLE_PATTERN_MOTIONS
+
+
+def is_multi_model_motion(pattern_name: str) -> TypeGuard[MultiModelMotion]:
+    return pattern_name in ALL_MULTI_MODEL_MOTIONS
+
+
+def is_handwriting_motion(pattern_name: str) -> TypeGuard[HandwritingMotion]:
+    return pattern_name in ALL_HANDWRITING_MOTIONS

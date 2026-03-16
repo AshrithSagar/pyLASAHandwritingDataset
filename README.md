@@ -57,6 +57,8 @@ from pyLASAHandwritingDataset import (
     ALL_MULTI_MODEL_MOTIONS,  # A tuple of all multi-model handwriting motions
     #
     is_handwriting_motion,  # A TypeGuard to check whether a `str` is a handwriting motion
+    is_multi_model_motion,  # A TypeGuard to check whether a `str` is a multi-model handwriting motion
+    is_single_pattern_motion,  # A TypeGuard to check whether a `str` is a single pattern handwriting motion
 )
 ```
 
