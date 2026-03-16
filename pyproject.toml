@@ -3,6 +3,12 @@ name = "pyLASAHandwritingDataset"
 version = "0.2.0"
 description = "LASA Handwriting dataset for Python3"
 readme = "README.md"
+keywords = ["LASA", "handwriting", "dataset"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 authors = [{ name = "Ashrith Sagar", email = "ashrithy@iisc.ac.in" }]
 requires-python = ">=3.10"
 dependencies = [
@@ -12,6 +18,11 @@ dependencies = [
     "scipy>=1.15.3",
     "tqdm>=4.67.3",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/AshrithSagar/pyLASAHandwritingDataset"
+"Repository" = "https://github.com/AshrithSagar/pyLASAHandwritingDataset"
+"Issues" = "https://github.com/AshrithSagar/pyLASAHandwritingDataset/issues"
 
 [build-system]
 requires = ["hatchling>=1.29.0"]
