@@ -27,7 +27,7 @@ from pyLASAHandwritingDataset.motions import (
     is_single_pattern_motion,
 )
 
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 __all__ = [
     "__version__",
     #

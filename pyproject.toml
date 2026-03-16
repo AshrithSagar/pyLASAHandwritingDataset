@@ -1,6 +1,6 @@
 [project]
 name = "pyLASAHandwritingDataset"
-version = "0.1.3"
+version = "0.2.0"
 description = "LASA Handwriting dataset for Python3"
 readme = "README.md"
 authors = [{ name = "Ashrith Sagar", email = "ashrithy@iisc.ac.in" }]
