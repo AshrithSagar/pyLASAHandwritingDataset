@@ -75,10 +75,13 @@ class LASAMotionPattern:
 
     def __post_init__(self) -> None:
         if self.name not in ALL_HANDWRITING_MOTIONS:
-            raise ValueError(f"Unknown shape {self.name!r}")
+            raise ValueError(
+                f"Unknown handwriting motion {self.name!r}.\n"
+                f"Valid motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
+            )
 
     def __repr__(self) -> str:
-        return f"LASAMotionPattern({self.name!r}, {len(self.demos)} demos, dt={self.dt:.4g})"
+        return f"{self.__class__.__name__}({self.name!r}, num_demos={len(self.demos)}, dt={self.dt:.4g})"
 
 
 class LASAHandwritingDataset:
@@ -113,7 +116,9 @@ class LASAHandwritingDataset:
                 _demos.append(LASADemonstration(pos=pos, t=t, vel=vel, acc=acc))
 
             demos = tuple(_demos)
-            assert len(demos) == 7
+            assert len(demos) == 7, (
+                f"Expected 7 demonstrations for {name!r}, but found {len(demos)}."
+            )
             data[name] = LASAMotionPattern(name=name, dt=dt, demos=demos)
 
         cls._data = data
@@ -126,9 +131,8 @@ class LASAHandwritingDataset:
 
     def __getitem__(self, name: HandwritingMotion) -> LASAMotionPattern:
         if name not in ALL_HANDWRITING_MOTIONS:
-            raise AttributeError(
-                f"{type(self).__name__!r} has no attribute {name!r}.\n"
-                f"Available shapes: {', '.join(ALL_HANDWRITING_MOTIONS)}."
+            raise KeyError(
+                f"{name!r} not found. Available motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
             )
         self._load()
         assert self._data is not None
@@ -136,7 +140,19 @@ class LASAHandwritingDataset:
 
     # Not recommended. This is only provided in case one prefers attribute access, although risky.
     def __getattr__(self, name: HandwritingMotion) -> LASAMotionPattern:  # type: ignore[misc]
-        return self.__getitem__(name)
+        if name not in ALL_HANDWRITING_MOTIONS:
+            raise AttributeError(
+                f"{self.__class__.__name__} has no attribute {name!r}.\n"
+                f"Available motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
+            )
+        self._load()
+        assert self._data is not None
+        return self._data[name]
+
+    def __repr__(self) -> str:
+        self._load()
+        assert self._data is not None
+        return f"{self.__class__.__name__}({len(self._data)} motions)"
 
 
 DataSet = LASAHandwritingDataset()
