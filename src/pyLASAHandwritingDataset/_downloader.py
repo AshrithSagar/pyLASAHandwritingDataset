@@ -8,7 +8,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 import platformdirs
-import pooch  # type: ignore[import-untyped]
+import pooch  # type: ignore[import-untyped]  # pyright: ignore[reportMissingTypeStubs]
 
 PKG_NAME = "pyLASAHandwritingDataset"
 COMMIT_FULLHASH = "38304f7c0ac4708b0fd38331d94d02095ad0ccfd" or "master"
@@ -34,7 +34,7 @@ def get_dataset_dir() -> Path:
     _CACHE_ROOT.mkdir(parents=True, exist_ok=True)
     zip_path = _CACHE_ROOT / _ZIP_NAME
 
-    pooch.retrieve(  # pyright: ignore[reportUnknownMemberType]
+    _ = pooch.retrieve(  # pyright: ignore[reportUnknownMemberType]
         url=REPO_ZIP_URL,
         known_hash=CHECKSUM,
         fname=zip_path.name,
@@ -57,7 +57,7 @@ def get_dataset_dir() -> Path:
 
     if DATASET_ROOT.exists():
         shutil.rmtree(DATASET_ROOT)  # Clean any previous partial state
-    shutil.move(str(source_dataset), str(DATASET_ROOT))
+    _ = shutil.move(str(source_dataset), str(DATASET_ROOT))
 
     # Clean up everything else
     shutil.rmtree(temp_extract)

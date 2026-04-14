@@ -9,6 +9,7 @@ from typing import Any, Literal
 
 import numpy as np
 from scipy.io import loadmat
+from typing_extensions import override
 
 from pyLASAHandwritingDataset._downloader import get_dataset_dir
 from pyLASAHandwritingDataset.motions import (
@@ -77,9 +78,10 @@ class LASAMotionPattern:
         if self.name not in ALL_HANDWRITING_MOTIONS:
             raise ValueError(
                 f"Unknown handwriting motion {self.name!r}.\n"
-                f"Valid motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
+                + f"Valid motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
             )
 
+    @override
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name!r}, num_demos={len(self.demos)}, dt={self.dt:.4g})"
 
@@ -131,7 +133,7 @@ class LASAHandwritingDataset:
 
     def __getitem__(self, name: HandwritingMotion) -> LASAMotionPattern:
         if name not in ALL_HANDWRITING_MOTIONS:
-            raise KeyError(
+            raise KeyError(  # pyright: ignore[reportUnreachable]
                 f"{name!r} not found. Available motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
             )
         self._load()
@@ -141,14 +143,15 @@ class LASAHandwritingDataset:
     # Not recommended. This is only provided in case one prefers attribute access, although risky.
     def __getattr__(self, name: HandwritingMotion) -> LASAMotionPattern:  # type: ignore[misc]
         if name not in ALL_HANDWRITING_MOTIONS:
-            raise AttributeError(
+            raise AttributeError(  # pyright: ignore[reportUnreachable]
                 f"{self.__class__.__name__} has no attribute {name!r}.\n"
-                f"Available motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
+                + f"Available motions: {', '.join(ALL_HANDWRITING_MOTIONS)}."
             )
         self._load()
         assert self._data is not None
         return self._data[name]
 
+    @override
     def __repr__(self) -> str:
         self._load()
         assert self._data is not None
