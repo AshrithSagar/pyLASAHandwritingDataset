@@ -31,10 +31,10 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = ["scipy-stubs>=1.15.3.0"]
-lint = ["ruff>=0.15.10"]
+lint = ["ruff>=0.15.11"]
 test = ["pytest>=9.0.3", "pytest-memray>=1.8.0"]
 typecheck = [
-    "basedpyright>=1.39.0",
+    "basedpyright>=1.39.2",
     "mypy[mypyc]>=1.20.1",
     "pyrefly>=0.61.0",
     "pyright>=1.1.408",
