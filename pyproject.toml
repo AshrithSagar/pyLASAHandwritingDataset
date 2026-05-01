@@ -42,3 +42,11 @@ typecheck = [
     "ty>=0.0.33",
     "zuban>=0.7.1",
 ]
+
+[tool.basedpyright]
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
+
+[tool.ruff.lint]
+ignore = ["F403", "F405"]
