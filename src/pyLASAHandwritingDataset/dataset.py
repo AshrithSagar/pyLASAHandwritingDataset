@@ -5,7 +5,7 @@ Dataset core
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Final, Literal
 
 import numpy as np
 from scipy.io import loadmat
@@ -158,4 +158,4 @@ class LASAHandwritingDataset:
         return f"{self.__class__.__name__}({len(self._data)} motions)"
 
 
-DataSet = LASAHandwritingDataset()
+DataSet: Final = LASAHandwritingDataset()
