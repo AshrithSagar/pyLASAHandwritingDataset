@@ -39,7 +39,7 @@ typecheck = [
     "pycroscope>=0.4.0",
     "pyrefly>=1.1.1",
     "pyright>=1.1.411",
-    "ty>=0.0.61",
+    "ty>=0.0.62",
     "zuban>=0.9.0",
 ]
 
